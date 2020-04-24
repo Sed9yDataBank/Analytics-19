@@ -1,0 +1,48 @@
+<div fxLayout="column" fxFlexFill>
+  <div fxFlex>
+    <mat-toolbar color="primary">
+      <mat-toolbar-row>
+        <span class="menu-spacer"></span>
+        <a mat-button [routerLink]="'/'">
+          <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
+          Home
+        </a>
+        <a mat-button [routerLink]="'/countries'">
+          <mat-icon aria-hidden="false" aria-label="Example home icon">list</mat-icon>
+          Countries
+        </a>
+        <span flex class="fill-space"></span>
+        <span flex class="fill-space"></span>
+       
+      </mat-toolbar-row>
+    </mat-toolbar>
+
+    <mat-sidenav-container>
+      <mat-sidenav #sidenav>
+        <mat-nav-list>
+          <a mat-list-item (click)="sidenav.toggle()" [routerLink]="'/'">
+            <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
+            Home
+          </a>
+          <a mat-list-item (click)="sidenav.toggle()" [routerLink]="'/countries'">
+            <mat-icon aria-hidden="false" aria-label="Example home icon">list</mat-icon>
+            Countries
+          </a>
+          <a mat-list-item (click)="sidenav.toggle()" mat-list-item>
+            <mat-icon aria-hidden="false" aria-label="Example home icon">close</mat-icon>
+            Close
+          </a>
+
+          <!-- Devider -->
+          <mat-divider style="margin-top: 25px; margin-bottom: 25px;"></mat-divider>
+
+        </mat-nav-list>
+      </mat-sidenav>
+      <mat-sidenav-content>
+        <div style="height: 88vh;" fxFlex>
+          <router-outlet></router-outlet>
+        </div>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  </div>
+</div>

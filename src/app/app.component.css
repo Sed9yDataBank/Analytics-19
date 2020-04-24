@@ -1,0 +1,14 @@
+.example-fill-remaining-space {
+  /* This fills the remaining space, by using flexbox.
+     Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+.fill-space {
+  flex: 1 1 auto;
+}
+.mat-toolbar.mat-primary {
+  background: 
+  #009688;
+color:
+  #fff;
+}
