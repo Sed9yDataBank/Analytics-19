@@ -1,0 +1,82 @@
+<div layout="row" class="container">
+
+  <button mat-raised-button style="text-align: center; justify-content: center;background-color: 
+  #54b2a9;color:white !important" color="accent"
+    [routerLink]="['/']">
+    <mat-icon aria-hidden="false" aria-label="Back">arrow_back_ios</mat-icon>
+    Back to regions
+  </button>
+
+  <!-- Country Name -->
+  <mat-grid-list cols="1" rowHeight="20px" *ngIf="regionName != null">
+    <mat-grid-tile>
+      <img height="30" width="30" src="assets/regions.png" alt="REGION" style="margin-right: 10px" />
+      <mat-label style="text-align: center; justify-content: center"><strong style="font-weight: bold; color:#b2545d;">Region: </strong>{{ regionName }}</mat-label>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+
+  <mat-form-field>
+    <mat-label style="color: #83d0c9;">Filter</mat-label>
+    <input matInput [disabled]="isError || isLoading" (keyup)="applyFilter($event)" placeholder="Ex. Morocco">
+  </mat-form-field>
+
+  <!-- Loading progressbarwhile fetching data from server -->
+  <mat-progress-bar *ngIf="isLoading && !isError" mode="indeterminate"></mat-progress-bar>
+
+  <div class="mat-elevation-z0">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <!-- Code Column -->
+      <ng-container matColumnDef="alpha2Code" style="color:  	#b2545d;">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-center"> Code</th>
+        <td mat-cell *matCellDef="let element">
+          <a [routerLink]="[element.alpha2Code.toLocaleLowerCase()]">
+            <button mat-button style="color:  	#b2545d;">{{element.alpha2Code}}</button>
+          </a>
+        </td>
+      </ng-container>
+
+      <!-- Cases Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+        <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+      </ng-container>
+
+      <!-- Region Column -->
+      <ng-container matColumnDef="region">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Region</th>
+        <td mat-cell *matCellDef="let element"> {{element.region}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="subregion">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Sub region</th>
+        <td mat-cell *matCellDef="let element"> {{element.subregion}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="nativeName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Native Name</th>
+        <td mat-cell *matCellDef="let element"> {{element.nativeName}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="flag">
+        <th mat-header-cell *matHeaderCellDef> Flag</th>
+        <td mat-cell *matCellDef="let element">
+          <picture>
+            <source media='(min-width:0px)' [srcset]="element.flag"/>
+            <img height="20" width="30" src="" alt="{{element.name}}"/>
+          </picture>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="getCountryDetails(row.alpha2Code)"></tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[30, 60, 90]" showFirstLastButtons></mat-paginator>
+  </div>
+
+</div>
