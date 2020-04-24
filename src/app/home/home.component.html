@@ -1,0 +1,59 @@
+<div layout="row" class="container">
+
+  <mat-form-field>
+    <mat-label style="color: #83d0c9;">Filter</mat-label>
+    <input matInput [disabled]="isError || isLoading" (keyup)="applyFilter($event)" placeholder="Ex. Africa">
+  </mat-form-field>
+
+  <!-- Loading progressbarwhile fetching data from server -->
+  <mat-progress-bar *ngIf="isLoading && !isError" mode="indeterminate"></mat-progress-bar>
+
+  <mat-grid-list cols="2" rowHeight="300px" flex fxLayout="row">
+    <mat-grid-tile *ngFor="let country of pagedList">
+      <mat-card  class="example-card" style="width: 90%; justify-content: center">
+        <mat-card-header style="width: 100%;">
+          <div mat-card-avatar>
+            <img src="assets/regions.png" height="40" width="40" style="border-radius: 100%" />
+          </div>
+          <mat-card-title>
+            <strong style="color: #83d0c9;">Region: </strong> {{ country.country }}
+            <strong style="float: right;">
+              <a mat-raised-button color="primary" class="mat-elevation-z4 hvr-buzz-out" [routerLink]="['/countries']" [queryParams]="{region: country.region}">
+                <mat-icon>near_me</mat-icon> Check region countries</a>
+            </strong>
+          </mat-card-title>
+          <mat-card-subtitle><strong style="color: #56c1b8; ">Cases: </strong> {{ country.cases }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="app-mat-content">
+          <mat-grid-list cols="2" rowHeight="25px">
+            <mat-grid-tile><strong>Today cases: </strong></mat-grid-tile>
+            <mat-grid-tile>{{ country.todayCases }}</mat-grid-tile>
+            <mat-grid-tile><strong>Deaths: </strong></mat-grid-tile>
+            <mat-grid-tile>{{ country.deaths }}</mat-grid-tile>
+
+            <mat-grid-tile><strong>Today deaths: </strong></mat-grid-tile>
+            <mat-grid-tile>{{ country.todayDeaths }}</mat-grid-tile>
+            <mat-grid-tile><strong>Recovered people: </strong></mat-grid-tile>
+            <mat-grid-tile>{{ country.recovered }}</mat-grid-tile>
+            <mat-grid-tile><strong>Active people: </strong></mat-grid-tile>
+            <mat-grid-tile>{{ country.active }}</mat-grid-tile>
+            <mat-grid-tile><strong>Critical: </strong></mat-grid-tile>
+            <mat-grid-tile>{{ country.critical }}</mat-grid-tile>
+            <mat-grid-tile><strong>Cases per one million: </strong></mat-grid-tile>
+            <mat-grid-tile>{{ country.casesPerOneMillion }}</mat-grid-tile>
+          </mat-grid-list>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-paginator [length]="length"
+                 [pageSize]="pageSize"
+                 [pageSizeOptions]="pageSizeOptions"
+                 (page)="onPageChange($event)"
+                 showFirstLastButtons>
+  </mat-paginator>
+
+
+
+</div>
