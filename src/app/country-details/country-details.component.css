@@ -1,0 +1,48 @@
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+table {
+  text-align: center !important;
+  width: 100%;
+}
+
+mat-header-cell, mat-cell {
+  text-align: center;
+  justify-content:center;
+}
+.container {
+  padding : 20px;
+}
+
+.my-chart {
+  width: 80%;
+  justify-content: center;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mat-flat-button.mat-accent, .mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent {
+  background-color: 
+  #54b2a9;
+}
+
+.mat-flat-button.mat-accent, .mat-raised-button.mat-accent, .mat-fab.mat-accent, .mat-mini-fab.mat-accent {
+  color: white;
+}
+
+::ng-deep .mat-focused .mat-form-field-label {
+  /*change color of label*/
+  color: green !important;
+ }
+
+ ::ng-deep.mat-form-field-underline {
+  /*change color of underline*/
+  background-color: green !important;
+} 
+
+::ng-deep.mat-form-field-ripple {
+ /*change color of underline when focused*/
+ background-color: green !important;;
+}

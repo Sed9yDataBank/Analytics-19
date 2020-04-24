@@ -1,0 +1,175 @@
+<div layout="row" class="container">
+
+  <button mat-raised-button style="text-align: center; justify-content: center;background-color: 
+  #54b2a9;color:white !important" color="accent"
+    [routerLink]="['/countries']">
+    <mat-icon aria-hidden="false" aria-label="Back">arrow_back_ios</mat-icon>
+    Back to countries
+  </button>
+
+  <!-- Country Name -->
+  <mat-grid-list cols="1" rowHeight="20px">
+    <mat-grid-tile>
+      <img height="20" width="30" src="{{country?.flag}}" alt="{{country?.flag}}" style="margin-right: 10px" />
+      <mat-label style="text-align: center; justify-content: center">{{ country?.name }}</mat-label>
+    </mat-grid-tile>
+  </mat-grid-list>
+
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput [disabled]="isError || isLoading" (keyup)="applyFilter($event)" placeholder="Ex. 10">
+  </mat-form-field>
+
+  <!-- Loading progressbarwhile fetching data from server -->
+  <mat-progress-bar *ngIf="isLoading && !isError" mode="indeterminate"></mat-progress-bar>
+
+  <div class="mat-elevation-z0">
+    <mat-table [dataSource]="dataSource" matSort>
+
+      <!-- Cases Column -->
+      <ng-container matColumnDef="cases">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Cases</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.cases}} </mat-cell>
+      </ng-container>
+
+      <!-- Today Cases Column -->
+      <ng-container matColumnDef="todayCases">
+        <mat-header-cell mat-sort-header *matHeaderCellDef> Today Cases</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.todayCases}} </mat-cell>
+      </ng-container>
+
+      <!-- Deaths Column -->
+      <ng-container matColumnDef="deaths">
+        <mat-header-cell mat-sort-header *matHeaderCellDef> Deaths</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.deaths}} </mat-cell>
+      </ng-container>
+
+      <!-- Today Deaths Column -->
+      <ng-container matColumnDef="todayDeaths">
+        <mat-header-cell mat-sort-header *matHeaderCellDef> Today Deaths</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.todayDeaths}} </mat-cell>
+      </ng-container>
+
+      <!-- Recovered Column -->
+      <ng-container matColumnDef="recovered">
+        <mat-header-cell mat-sort-header *matHeaderCellDef> Recovered</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.recovered}} </mat-cell>
+      </ng-container>
+
+      <!-- Active Column -->
+      <ng-container matColumnDef="active">
+        <mat-header-cell mat-sort-header *matHeaderCellDef> Active</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.active}} </mat-cell>
+      </ng-container>
+
+      <!-- Critical Column -->
+      <ng-container matColumnDef="critical">
+        <mat-header-cell mat-sort-header *matHeaderCellDef> Critical</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.critical}} </mat-cell>
+      </ng-container>
+
+      <!-- Timestamp Column -->
+      <ng-container matColumnDef="timestamp">
+        <mat-header-cell mat-sort-header *matHeaderCellDef> Timestamp</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.timestamp}} </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+  </div>
+
+  <!-- Devider -->
+  <mat-divider></mat-divider>
+
+  <!-- Range date -->
+  <mat-grid-list cols="4" rowHeight="75px">
+    <mat-grid-tile colspan="4">
+      <mat-label>Filter with range</mat-label>
+    </mat-grid-tile>
+    <mat-grid-tile></mat-grid-tile>
+    <form (ngSubmit)="onDateRangeUpdate()" [formGroup]="dateForm">
+      <mat-grid-tile>
+        <mat-form-field style="text-align: center; justify-content: center;">
+          <mat-label>Start Date</mat-label>
+          <input matInput formControlName="startPicker" [matDatepicker]="startPicker">
+          <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+          <mat-datepicker #startPicker></mat-datepicker>
+          <!-- Field Errors -->
+          <mat-error *ngIf="dateForm.controls.startPicker.touched && dateForm.controls.startPicker.invalid && dateForm.controls.startPicker.errors.required">
+            Start date is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <mat-form-field style="text-align: center; justify-content: center;">
+          <mat-label>End Date</mat-label>
+          <input matInput formControlName="endPicker" [matDatepicker]="endPicker">
+          <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+          <mat-datepicker #endPicker></mat-datepicker>
+          <!-- Field Errors -->
+          <mat-error *ngIf="dateForm.controls.endPicker.touched && dateForm.controls.endPicker.invalid && dateForm.controls.endPicker.errors.required">
+            End date is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="4" *ngIf="dateForm.controls.startPicker.touched && dateForm.controls.endPicker.touched && dateForm.invalid && dateForm.errors?.invalidDateRange">
+        <mat-error>
+          <strong>* Invalid range</strong>
+        </mat-error>
+      </mat-grid-tile>
+      <mat-grid-tile colspan="4">
+        <button style="margin-top: 15px;" mat-raised-button style="text-align: center; justify-content: center"
+          color="accent" type="submit" [disabled]="dateForm.invalid">
+          <mat-icon aria-hidden="false" aria-label="Back">autorenew</mat-icon> Update Date Range
+        </button>
+      </mat-grid-tile>
+    </form>
+  </mat-grid-list>
+
+
+  <!-- Devider -->
+  <mat-divider></mat-divider>
+
+  <!-- Bar Chart -->
+  <div class="mat-elevation-z0 my-chart">
+    <div>
+      <div>
+        <section class="mat-typography">
+          <h1>Latest Updates</h1>
+        </section>
+        <div style="display: block">
+          <canvas baseChart [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+            [plugins]="lineChartPlugins" [legend]="lineChartLegend" [chartType]="lineChartType"
+            [colors]="lineChartColors">
+          </canvas>
+          <button style="margin-top: 15px;" mat-raised-button style="text-align: center; justify-content: center"
+            color="primary" (click)="changeStyle()">
+            <mat-icon aria-hidden="false" aria-label="Back">update</mat-icon> Change View
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Devider -->
+  <mat-divider style="margin-top: 25px; margin-bottom: 25px;"></mat-divider>
+
+  <!-- Bar Chart -->
+  <div class="mat-elevation-z0 my-chart">
+    <div>
+      <div>
+        <section class="mat-typography">
+        </section>
+        <div style="display: block">
+          <canvas baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+            [options]="pieChartOptions" [plugins]="pieChartPlugins" [colors]="pieChartColors" [legend]="pieChartLegend">
+          </canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
